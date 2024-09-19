@@ -5,7 +5,6 @@ export default function Modules() {
         <button>Collapse All</button> <button>View Progress</button> <select id="wd-modules-select">
           <option>Publish All</option>
           <option>Week 1</option>
-          <option>Week 2</option>
         </select> <button>+ Module</button>
       </ul>
       <ul id="wd-modules">
@@ -45,7 +44,7 @@ export default function Modules() {
                 <li className="wd-content-item">Learn how to create user interfaces with HTML</li>
                 <li className="wd-content-item">Deploy the assignment to Netlify</li>
               </ul>
-            </li> 
+            </li>
             <li className="wd-lesson">
               <span className="wd-title">SLIDES</span>
               <ul className="wd-content">
@@ -54,8 +53,8 @@ export default function Modules() {
                 <li className="wd-content-item">Formatting content with Lists and Tables</li>
               </ul>
             </li>
-            </ul>
-            
+          </ul>
+
         </li>
       </ul>
     </div>);
