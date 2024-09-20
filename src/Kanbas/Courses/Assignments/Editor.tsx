@@ -90,9 +90,15 @@ export default function AssignmentEditor() {
             </td>
           </tr>
         </tr>
+        <tfoot>
+          <tr>
+            <td colSpan={3} align="right" valign="top">
+              <hr />
+              <button>Cancel</button> <button>Save</button>
+            </td>
+          </tr>
+        </tfoot>
       </table>
-      <hr />
-      <button>Cancel</button> <button>Save</button>
     </div >
   );
 }
