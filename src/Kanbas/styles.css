@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body * {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* The class is declared inside a @media query that applies the 140 pixel offset only when the screen is wider than 768 pixels, exactly when the sidebar appears. */
+@media (min-width: 768px) {
+  #wd-kanbas .wd-main-content-offset {
+    padding-left: 140px !important;
+  }
+}
+
+/* sidebar renders with a white background color, red text, and black border of the highlighted link. */
+.list-group.wd>.list-group-item.active {
+  color: black;
+  background-color: white;
+  border-left: 3px solid black !important;
+}
+
+
+
+.btn-secondary {
+  --bs-btn-color: #000 !important;
+  --bs-btn-bg: #c7cdd1 !important;
+  --bs-btn-border-color: #c7cdd1 !important;
+  --bs-btn-hover-color: #fff !important;
+}
+
+.btn-secondary {
+  --bs-btn-color: #000 !important;
+  --bs-btn-bg: #c7cdd1 !important;
+  --bs-btn-border-color: #c7cdd1 !important;
+  --bs-btn-hover-color: #fff !important;
+}
+
+.bg-secondary {
+  --bs-secondary-rgb: 199, 205, 209;
+}
+
+.list-group-item {
+  --bs-list-group-border-color: gray;
+}
+
+.wd-lesson {
+  border-left: 3px solid green !important;
+}
+
+.wd-each-assign {
+  border-left: 3px solid green !important;
+}
+
+
+.white-bg {
+  background-color: white !important;
+  border-right: none !important;
+}
+
+.wd-border-medium {
+  border-style: solid;
+  padding: 2px 10px;
+}
+
+.custom-link {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
