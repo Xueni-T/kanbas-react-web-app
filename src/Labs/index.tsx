@@ -6,6 +6,7 @@ import Lab3 from "./Lab3";
 export default function Labs() {
   return (
     <div id="wd-labs">
+      <br />
       <h1>Xueni Tang Sec 01</h1>
       <h1>Labs</h1>
       <TOC />
