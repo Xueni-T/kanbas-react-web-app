@@ -11,7 +11,6 @@ export default function AssignmentEditor() {
       </div>
       <div className="row mb-3">
         <div className="col">
-          <label htmlFor="wd-description">Description</label>
           <textarea id="wd-description" className="form-control" rows={12} cols={50}>
             {`The assignment is available online
 
@@ -46,7 +45,7 @@ The Kanas application should include a link to navigate back to the landing page
               <label htmlFor="wd-group">Assignment Group</label>
             </div>
             <div className="col-md-8">
-              <select id="wd-group" className="form-control">
+              <select id="wd-group" className="form-select">
                 <option selected value="ASSIGNMENTS">ASSIGNMENTS</option>
                 <option value="QUIZZES">QUIZZES</option>
                 <option value="EXAMS">EXAMS</option>
@@ -60,7 +59,7 @@ The Kanas application should include a link to navigate back to the landing page
               <label htmlFor="wd-display-grade-as">Display Grade as</label>
             </div>
             <div className="col-md-8">
-              <select id="wd-display-grade-as" className="form-control">
+              <select id="wd-display-grade-as" className="form-select">
                 <option selected value="Percentage">Percentage</option>
                 <option value="Points">Points</option>
                 <option value="GPA">GPA</option>
@@ -75,7 +74,7 @@ The Kanas application should include a link to navigate back to the landing page
             <div className="col-md-8">
               <fieldset className="border p-3">
                 <div className="d-flex justify-content-center">
-                  <select id="wd-submission-type" className="form-control">
+                  <select id="wd-submission-type" className="form-select">
                     <option value="Online">Online</option>
                   </select>
                 </div>
@@ -110,19 +109,19 @@ The Kanas application should include a link to navigate back to the landing page
             </div>
             <div className="col-md-8">
               <fieldset className="border p-3">
-                <label htmlFor="wd-assign-to">Assign to</label>
+                <label htmlFor="wd-assign-to"><strong>Assign to</strong></label>
                 <div className="mt-1 p-2 border rounded mb-3"><AssignToButton /></div>
                 <div className="mb-3">
-                  <label htmlFor="wd-due-date">Due</label>
+                  <label htmlFor="wd-due-date"><strong>Due</strong></label>
                   <input type="datetime-local" id="wd-due-date" className="form-control" value="2024-05-13T23:59" />
                 </div>
                 <div className="row">
                   <div className="col-md-6">
-                    <label htmlFor="wd-available-from">Available from</label>
+                    <label htmlFor="wd-available-from"><strong>Available from</strong></label>
                     <input type="datetime-local" id="wd-available-from" className="form-control" value="2024-05-06T12:00" />
                   </div>
                   <div className="col-md-6">
-                    <label htmlFor="wd-available-until">Until</label>
+                    <label htmlFor="wd-available-until"><strong>Until</strong></label>
                     <input type="datetime-local" id="wd-available-until" className="form-control" />
                   </div>
                 </div>
