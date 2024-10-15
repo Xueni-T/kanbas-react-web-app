@@ -4,8 +4,11 @@ import AssignmentsControlButtons from './AssignmentsControlButtons';
 import EachAssignControlButtons from './EachAssignControlButtons';
 import EachAssignHead from './EachAssignHead';
 import { RxTriangleDown } from "react-icons/rx";
-
+import { useParams, Link } from "react-router-dom";
+import * as db from "../../Database";
 export default function Assignments() {
+  const { cid } = useParams();
+  const assignments = db.assignments;
   return (
     <div>
       <AssignmentsControls />
@@ -20,53 +23,24 @@ export default function Assignments() {
             <AssignmentsControlButtons />
           </div>
           <ul className="wd-assign-list list-group rounded-0">
-            <li className="wd-each-assign list-group-item p-3 ps-1 d-flex align-items-center justify-content-between">
-              <EachAssignHead />
-              <div className="flex-grow-1 ms-4">
-                <p className="wd-each-assign-list-item mb-0">
-                  <a className="wd-assignment-link custom-link fs-4"
-                    href="#/Kanbas/Courses/1234/Assignments/A1">
-                    A1
-                  </a><br />
-                  <div className='fs-5'>
-                  <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> May 6 at 12:00am |<br />
-                  <strong>Due</strong> May 13 at 11:59pm | 100 pts </div>
-                </p>
-              </div>
-              <EachAssignControlButtons />
-            </li>
-            <li className="wd-each-assign list-group-item p-3 ps-1 d-flex align-items-center justify-content-between">
-              <EachAssignHead />
-              <div className="flex-grow-1 ms-4">
-                <p className="wd-each-assign-list-item mb-0">
-                  <a className="wd-assignment-link custom-link fs-4"
-                    href="#/Kanbas/Courses/1234/Assignments/A1">
-                    A2
-                  </a><br />
-                  <div className='fs-5'>
-                  <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> May 13 at 12:00am |<br />
-                  <strong>Due</strong> May 20 at 11:59pm | 100 pts </div>
-                </p>
-              </div>
-              <EachAssignControlButtons />
-            </li>
-
-            <li className="wd-each-assign list-group-item p-3 ps-1 d-flex align-items-center justify-content-between">
-              <EachAssignHead />
-              <div className="flex-grow-1 ms-4">
-                <p className="wd-each-assign-list-item mb-0">
-                  <a className="wd-assignment-link custom-link fs-4"
-                    href="#/Kanbas/Courses/1234/Assignments/A1">
-                    A3
-                  </a><br />
-                  <div className='fs-5'>
-                  <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> May 20 at 12:00am |<br />
-                  <strong>Due</strong> May 27 at 11:59pm | 100 pts</div>
-                </p>
-              </div>
-              <EachAssignControlButtons />
-            </li>
-
+            {assignments
+              .filter((assignment: any) => assignment.course === cid)
+              .map((assignment: any) => (
+                <li className="wd-each-assign list-group-item p-3 ps-1 d-flex align-items-center justify-content-between">
+                  <EachAssignHead />
+                  <div className="flex-grow-1 ms-4">
+                    <p className="wd-each-assign-list-item mb-0">
+                      <Link to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`} className="wd-assignment-link custom-link fs-4">
+                        {assignment.title}
+                      </Link><br />
+                      <div className='fs-5'>
+                        <span className="text-danger">{assignment.module_name}</span> | <strong>Not available until</strong> {assignment.availableDate} |<br />
+                        <strong>Due</strong> {assignment.dueDate} | {assignment.points} pts </div>
+                    </p>
+                  </div>
+                  <EachAssignControlButtons />
+                </li>
+              ))}
           </ul>
         </li>
       </ul>
