@@ -1,4 +1,3 @@
-import AssignToButton from "./AssignToButton";
 import { Link, useParams } from "react-router-dom";
 import * as db from "../../Database";
 
@@ -45,8 +44,10 @@ export default function AssignmentEditor() {
             </div>
             <div className="col-md-8">
               <fieldset className="border p-3">
-                <label htmlFor="wd-assign-to"><strong>Assign to</strong></label>
-                <div className="mt-1 p-2 border rounded mb-3"><AssignToButton /></div>
+                <div className="mb-3">
+                  <label htmlFor="wd-assign-to"><strong>Assign to</strong></label>
+                  <input id="wd-assign" className="form-control" />
+                </div>
                 <div className="mb-3">
                   <label htmlFor="wd-due-date"><strong>Due</strong></label>
                   <input type="datetime-local" id="wd-due-date" className="form-control" value={assignment.dueDateValue} />
