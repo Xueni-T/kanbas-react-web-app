@@ -1,14 +1,24 @@
 import { BsGripVertical } from 'react-icons/bs';
 import AssignmentsControls from './AssignmentsControls';
 import AssignmentsControlButtons from './AssignmentsControlButtons';
-import EachAssignControlButtons from './EachAssignControlButtons';
+import EachAssignControl from './EachAssignControl';
 import EachAssignHead from './EachAssignHead';
 import { RxTriangleDown } from "react-icons/rx";
 import { useParams, Link } from "react-router-dom";
 import * as db from "../../Database";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addAssignment, updateAssignment, deleteAssignment } from "./reducer";
 export default function Assignments() {
   const { cid } = useParams();
-  const assignments = db.assignments;
+  const dispatch = useDispatch();
+  const [assignmentToDelete, setAssignmentToDelete] = useState("");
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const confirmDeleteAssignment = () => {
+    dispatch(deleteAssignment(assignmentToDelete));
+    setAssignmentToDelete("");
+  };
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   return (
     <div>
       <AssignmentsControls />
@@ -30,15 +40,29 @@ export default function Assignments() {
                   <EachAssignHead />
                   <div className="flex-grow-1 ms-4">
                     <p className="wd-each-assign-list-item mb-0">
-                      <Link to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`} className="wd-assignment-link custom-link fs-4">
-                        {assignment.title}
-                      </Link><br />
+                        {currentUser?.role === 'FACULTY' ? (
+                        <Link to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`} className="wd-assignment-link custom-link fs-4">
+                          {assignment.title}
+                        </Link>
+                        ) : (
+                        <span className="fs-4"><strong>{assignment.title}</strong></span>
+                        )}<br />
                       <div className='fs-5'>
-                        <span className="text-danger">{assignment.module_name}</span> | <strong>Not available until</strong> {assignment.availableDate} |<br />
-                        <strong>Due</strong> {assignment.dueDate} | {assignment.points} pts </div>
+                        <span className="text-danger">Multiple Modules</span> <span>| </span> 
+                        <strong>Due</strong> {new Date(assignment.dueDate).toLocaleString('en-US',
+                          { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
+                          <span> | </span> {assignment.points} pts </div>
+                        <strong>Not available until</strong> {new Date(assignment.availableDate).toLocaleString('en-US',
+                          { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
+                        <span> | </span> <strong>Available until</strong> {new Date(assignment.untilDate).toLocaleString('en-US',
+                          { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
                     </p>
                   </div>
-                  <EachAssignControlButtons />
+                  <EachAssignControl
+                    deleteAssignment={confirmDeleteAssignment}
+                    assignmentId={assignment._id}
+                    setAssignmentToDelete={setAssignmentToDelete}
+                  />
                 </li>
               ))}
           </ul>
