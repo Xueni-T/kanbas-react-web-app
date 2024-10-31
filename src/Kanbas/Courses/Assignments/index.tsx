@@ -1,11 +1,24 @@
 import { BsGripVertical } from 'react-icons/bs';
 import AssignmentsControls from './AssignmentsControls';
 import AssignmentsControlButtons from './AssignmentsControlButtons';
-import EachAssignControlButtons from './EachAssignControlButtons';
+import EachAssignControl from './EachAssignControl';
 import EachAssignHead from './EachAssignHead';
 import { RxTriangleDown } from "react-icons/rx";
-
+import { useParams, Link } from "react-router-dom";
+import * as db from "../../Database";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addAssignment, updateAssignment, deleteAssignment } from "./reducer";
 export default function Assignments() {
+  const { cid } = useParams();
+  const dispatch = useDispatch();
+  const [assignmentToDelete, setAssignmentToDelete] = useState("");
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const confirmDeleteAssignment = () => {
+    dispatch(deleteAssignment(assignmentToDelete));
+    setAssignmentToDelete("");
+  };
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
   return (
     <div>
       <AssignmentsControls />
@@ -20,53 +33,38 @@ export default function Assignments() {
             <AssignmentsControlButtons />
           </div>
           <ul className="wd-assign-list list-group rounded-0">
-            <li className="wd-each-assign list-group-item p-3 ps-1 d-flex align-items-center justify-content-between">
-              <EachAssignHead />
-              <div className="flex-grow-1 ms-4">
-                <p className="wd-each-assign-list-item mb-0">
-                  <a className="wd-assignment-link custom-link fs-4"
-                    href="#/Kanbas/Courses/1234/Assignments/A1">
-                    A1
-                  </a><br />
-                  <div className='fs-5'>
-                  <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> May 6 at 12:00am |<br />
-                  <strong>Due</strong> May 13 at 11:59pm | 100 pts </div>
-                </p>
-              </div>
-              <EachAssignControlButtons />
-            </li>
-            <li className="wd-each-assign list-group-item p-3 ps-1 d-flex align-items-center justify-content-between">
-              <EachAssignHead />
-              <div className="flex-grow-1 ms-4">
-                <p className="wd-each-assign-list-item mb-0">
-                  <a className="wd-assignment-link custom-link fs-4"
-                    href="#/Kanbas/Courses/1234/Assignments/A1">
-                    A2
-                  </a><br />
-                  <div className='fs-5'>
-                  <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> May 13 at 12:00am |<br />
-                  <strong>Due</strong> May 20 at 11:59pm | 100 pts </div>
-                </p>
-              </div>
-              <EachAssignControlButtons />
-            </li>
-
-            <li className="wd-each-assign list-group-item p-3 ps-1 d-flex align-items-center justify-content-between">
-              <EachAssignHead />
-              <div className="flex-grow-1 ms-4">
-                <p className="wd-each-assign-list-item mb-0">
-                  <a className="wd-assignment-link custom-link fs-4"
-                    href="#/Kanbas/Courses/1234/Assignments/A1">
-                    A3
-                  </a><br />
-                  <div className='fs-5'>
-                  <span className="text-danger">Multiple Modules</span> | <strong>Not available until</strong> May 20 at 12:00am |<br />
-                  <strong>Due</strong> May 27 at 11:59pm | 100 pts</div>
-                </p>
-              </div>
-              <EachAssignControlButtons />
-            </li>
-
+            {assignments
+              .filter((assignment: any) => assignment.course === cid)
+              .map((assignment: any) => (
+                <li className="wd-each-assign list-group-item p-3 ps-1 d-flex align-items-center justify-content-between">
+                  <EachAssignHead />
+                  <div className="flex-grow-1 ms-4">
+                    <p className="wd-each-assign-list-item mb-0">
+                        {currentUser?.role === 'FACULTY' ? (
+                        <Link to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`} className="wd-assignment-link custom-link fs-4">
+                          {assignment.title}
+                        </Link>
+                        ) : (
+                        <span className="fs-4"><strong>{assignment.title}</strong></span>
+                        )}<br />
+                      <div className='fs-5'>
+                        <span className="text-danger">Multiple Modules</span> <span>| </span> 
+                        <strong>Due</strong> {new Date(assignment.dueDate).toLocaleString('en-US',
+                          { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
+                          <span> | </span> {assignment.points} pts </div>
+                        <strong>Not available until</strong> {new Date(assignment.availableDate).toLocaleString('en-US',
+                          { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
+                        <span> | </span> <strong>Available until</strong> {new Date(assignment.untilDate).toLocaleString('en-US',
+                          { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
+                    </p>
+                  </div>
+                  <EachAssignControl
+                    deleteAssignment={confirmDeleteAssignment}
+                    assignmentId={assignment._id}
+                    setAssignmentToDelete={setAssignmentToDelete}
+                  />
+                </li>
+              ))}
           </ul>
         </li>
       </ul>
