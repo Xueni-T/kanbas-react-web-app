@@ -4,12 +4,10 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import GreenCheckmark from "./GreenCheckmark";
 import { FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
-export default function AssignmentsControls({
-  deleteAssignment,
+export default function EachAssignControl({
   assignmentId,
   setAssignmentToDelete,
 }: {
-  deleteAssignment: (title: string) => void;
   assignmentId: string;
   setAssignmentToDelete: (title: string) => void;
 }) {
@@ -20,10 +18,6 @@ export default function AssignmentsControls({
         <>
           <FaTrash className="text-danger me-4 fs-4" data-bs-toggle="modal" data-bs-target="#wd-add-assignment-dialog"
             onClick={() => setAssignmentToDelete(assignmentId)} />
-          <DeleteEachAssign
-            dialogTitle="Delete Assignment"
-            deleteAssignment={deleteAssignment}
-            assignmentId={assignmentId} />
         </>
       )}
       <GreenCheckmark />

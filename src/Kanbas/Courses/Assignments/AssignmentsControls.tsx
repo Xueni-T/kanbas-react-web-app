@@ -1,6 +1,5 @@
 import { IoSearchOutline } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa6";
-import AssignmentEditor from "./Editor";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 export default function AssignmentsControls() {
@@ -17,7 +16,7 @@ export default function AssignmentsControls() {
           <IoSearchOutline />
         </span>
         <input
-          id = "wd-search-assignments"
+          id="wd-search-assignments"
           type="text"
           className="form-control"
           placeholder="Search..."
@@ -26,17 +25,17 @@ export default function AssignmentsControls() {
       </div>
       {currentUser?.role === "FACULTY" && (
         <>
-      <div className="d-flex">
-        <button id="wd-add-group-btn" className="btn btn-lg btn-secondary me-2">
-          <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-          Group
-        </button>
-        <button id="wd-add-assignment-btn" className="btn btn-lg btn-danger" onClick={handleAddAssignment}>
-          <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-          Assignment
-        </button>
-      </div>
-      </> )}
+          <div className="d-flex">
+            <button id="wd-add-group-btn" className="btn btn-lg btn-secondary me-2">
+              <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+              Group
+            </button>
+            <button id="wd-add-assignment-btn" className="btn btn-lg btn-danger" onClick={handleAddAssignment}>
+              <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+              Assignment
+            </button>
+          </div>
+        </>)}
     </div>
   );
 }

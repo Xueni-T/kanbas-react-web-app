@@ -3,22 +3,29 @@ import AssignmentsControls from './AssignmentsControls';
 import AssignmentsControlButtons from './AssignmentsControlButtons';
 import EachAssignControl from './EachAssignControl';
 import EachAssignHead from './EachAssignHead';
+import DeleteEachAssign from "./deleteEachAssign";
 import { RxTriangleDown } from "react-icons/rx";
 import { useParams, Link } from "react-router-dom";
 import * as db from "../../Database";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addAssignment, updateAssignment, deleteAssignment } from "./reducer";
+import { setAssignments, addAssignment, updateAssignment, deleteAssignment } from "./reducer";
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
 export default function Assignments() {
   const { cid } = useParams();
   const dispatch = useDispatch();
-  const [assignmentToDelete, setAssignmentToDelete] = useState("");
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-  const confirmDeleteAssignment = () => {
-    dispatch(deleteAssignment(assignmentToDelete));
-    setAssignmentToDelete("");
-  };
+  const [assignmentToDelete, setAssignmentToDelete] = useState<string>("");
   const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const fetchAssignments = async () => {
+    const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, [cid]);
+
   return (
     <div>
       <AssignmentsControls />
@@ -34,38 +41,41 @@ export default function Assignments() {
           </div>
           <ul className="wd-assign-list list-group rounded-0">
             {assignments
-              .filter((assignment: any) => assignment.course === cid)
               .map((assignment: any) => (
                 <li className="wd-each-assign list-group-item p-3 ps-1 d-flex align-items-center justify-content-between">
                   <EachAssignHead />
                   <div className="flex-grow-1 ms-4">
                     <p className="wd-each-assign-list-item mb-0">
-                        {currentUser?.role === 'FACULTY' ? (
+                      {currentUser?.role === 'FACULTY' ? (
                         <Link to={`/Kanbas/Courses/${cid}/Assignments/${assignment._id}`} className="wd-assignment-link custom-link fs-4">
                           {assignment.title}
                         </Link>
-                        ) : (
+                      ) : (
                         <span className="fs-4"><strong>{assignment.title}</strong></span>
-                        )}<br />
+                      )}<br />
                       <div className='fs-5'>
-                        <span className="text-danger">Multiple Modules</span> <span>| </span> 
+                        <span className="text-danger">Multiple Modules</span> <span>| </span>
                         <strong>Due</strong> {new Date(assignment.dueDate).toLocaleString('en-US',
                           { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
-                          <span> | </span> {assignment.points} pts </div>
-                        <strong>Not available until</strong> {new Date(assignment.availableDate).toLocaleString('en-US',
-                          { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
-                        <span> | </span> <strong>Available until</strong> {new Date(assignment.untilDate).toLocaleString('en-US',
-                          { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
+                        <span> | </span> {assignment.points} pts </div>
+                      <strong>Not available until</strong> {new Date(assignment.availableDate).toLocaleString('en-US',
+                        { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
+                      <span> | </span> <strong>Available until</strong> {new Date(assignment.untilDate).toLocaleString('en-US',
+                        { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
                     </p>
                   </div>
                   <EachAssignControl
-                    deleteAssignment={confirmDeleteAssignment}
+                    //deleteAssignment={confirmDeleteAssignment}
                     assignmentId={assignment._id}
                     setAssignmentToDelete={setAssignmentToDelete}
                   />
                 </li>
               ))}
           </ul>
+            <DeleteEachAssign
+              dialogTitle="Delete Assignment"
+              assignmentId={assignmentToDelete}
+            />
         </li>
       </ul>
     </div>

@@ -1,12 +1,19 @@
-export default function deleteEachAssign({
+import * as assignmentsClient from "./client";
+import { useDispatch } from "react-redux";
+import { deleteAssignment } from "./reducer";
+
+export default function DeleteEachAssign({
   dialogTitle,
-  deleteAssignment,
   assignmentId
 }: {
   dialogTitle: string;
-  deleteAssignment: (assignmentId: string) => void;
   assignmentId: string;
 }) {
+  const dispatch = useDispatch();
+  const removeAssignment = async (assignmentId: string) => {
+    await assignmentsClient.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
   return (
     <div id="wd-add-assignment-dialog" className="modal fade">
       <div className="modal-dialog">
@@ -24,7 +31,7 @@ export default function deleteEachAssign({
               type="button"
               className="btn btn-danger"
               data-bs-dismiss="modal"
-              onClick={() => deleteAssignment(assignmentId)}
+              onClick={() => removeAssignment(assignmentId)}
             >Yes</button>
           </div>
         </div>

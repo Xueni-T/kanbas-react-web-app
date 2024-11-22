@@ -3,7 +3,8 @@ import * as db from "../../Database";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addAssignment, updateAssignment, cancelUpdate } from "./reducer";
-
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
 export default function AssignmentEditor() {
   const { cid, aid } = useParams();
   const navigate = useNavigate();
@@ -28,18 +29,23 @@ export default function AssignmentEditor() {
     }
   }, [setAssignment, aid, cid]);
 
-  const handleInputChange = (field: string, value: any) => {
-    setAssignment({ ...assignment, [field]: value });
-  };
-
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!aid) {
       const newAssignment = { ...assignment, _id: new Date().getTime().toString(), course: cid };
+      if (cid) {
+        const savedAssignment = await coursesClient.createAssignmentForCourse(cid, newAssignment);
+        dispatch(addAssignment(savedAssignment));
+      }
       dispatch(addAssignment(newAssignment));
     } else {
-      dispatch(updateAssignment(assignment));
+      const updatedAssignment = await assignmentsClient.updateAssignment(assignment);
+      dispatch(updateAssignment(updatedAssignment));
     }
     navigate(`/Kanbas/Courses/${cid}/Assignments`);
+  };
+
+  const handleInputChange = (field: string, value: any) => {
+    setAssignment({ ...assignment, [field]: value });
   };
 
   const handleCancel = () => {
