@@ -42,3 +42,7 @@ export const createAssignmentForCourse = async (courseId: string, assignment: an
   );
   return response.data;
 };
+
+export function findAllCourses() {
+  throw new Error("Function not implemented.");
+}

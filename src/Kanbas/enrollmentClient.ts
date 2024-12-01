@@ -23,3 +23,8 @@ export const unenroll = async (courseId: string, userId: string) => {
     throw error;
   }
 };
+// find all enrollments for a user
+export const findEnrollments = async () => {
+  const { data } = await axios.get(`${ENROLLMENTS_API}`);
+  return data;
+}
